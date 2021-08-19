@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
+import './App.css';
 
 type Todo = {
   id: string;
@@ -51,7 +52,7 @@ const App: React.FC = () => {
   };
 
   return (
-    <>
+    <div className='App'>
       <form onSubmit={handleSubmit}>
         <input
           type='text'
@@ -82,7 +83,7 @@ const App: React.FC = () => {
           );
         })}
       </ul>
-    </>
+    </div>
   );
 };
 
