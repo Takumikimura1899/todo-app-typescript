@@ -17,3 +17,15 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.all {
+  background: white;
+}
+.checked {
+  background: yellow;
+}
+.unchecked {
+}
+.removed {
+  background: pink;
+}
