@@ -1,15 +1,8 @@
 import { nanoid } from 'nanoid';
 import React, { useState } from 'react';
 import './App.css';
-
-type Todo = {
-  id: string;
-  value: string;
-  checked: boolean;
-  removed: boolean;
-};
-
-type Filter = 'all' | 'checked' | 'unchecked' | 'removed';
+import InputForm from './components/InputForm';
+import Select from './components/Select';
 
 const App: React.FC = () => {
   const [text, setText] = useState('');
@@ -27,6 +20,7 @@ const App: React.FC = () => {
       removed: false,
     };
     setTodos([newTodo, ...todos]);
+    setText('');
   };
 
   const handleEdit = (id: string, value: string) => {
@@ -60,6 +54,11 @@ const App: React.FC = () => {
     setTodos(newTodos);
   };
 
+  const handleEmpty = () => {
+    const newTodos = todos.filter((todo) => !todo.removed);
+    setTodos(newTodos);
+  };
+
   const filteredTodos = todos.filter((todo) => {
     switch (filter) {
       case 'all':
@@ -77,30 +76,17 @@ const App: React.FC = () => {
 
   return (
     <div className='App'>
-      <select
-        defaultValue='all'
-        onChange={(e) => setFilter(e.target.value as Filter)}
-      >
-        <option value='all'>全てのタスク</option>
-        <option value='checked'>完了したタスク</option>
-        <option value='unchecked'>未完了のタスク</option>
-        <option value='removed'>削除済みのタスク</option>
-      </select>
-      <form onSubmit={handleSubmit}>
-        <input
-          type='text'
-          value={text}
-          disabled={filter === 'checked' || filter === 'removed'}
-          onChange={(e) => setText(e.target.value)}
+      <Select setFilter={setFilter} />
+      {filter === 'removed' ? (
+        <button onClick={handleEmpty}>ゴミ箱を空にする</button>
+      ) : (
+        <InputForm
+          text={text}
+          filter={filter}
+          setText={setText}
+          handleSubmit={handleSubmit}
         />
-        <button
-          type='submit'
-          disabled={filter === 'checked' || filter === 'removed'}
-          onSubmit={(e) => e.preventDefault()}
-        >
-          追加
-        </button>
-      </form>
+      )}
       <ul>
         {filteredTodos.map((todo) => {
           return (
